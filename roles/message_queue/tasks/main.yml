@@ -35,23 +35,3 @@
 
 - include: roles/keystore/tasks/main.yml
 
-- name: check if message queue is stopped
-  become: true
-  become_user: "{{ app_user }}"
-  command: /opt/affinitas_chat/apollomq_1.7.1/chat.elitesingles.com/bin/apollo-broker-service status
-  register: message_queue_status
-  ignore_errors: true
-  changed_when: false
-  failed_when: ("apollo-broker-service is" not in message_queue_status.stdout)
-
-- name: stop message queue if running
-  become: true
-  become_user: "{{ app_user }}"
-  command: /opt/affinitas_chat/apollomq_1.7.1/chat.elitesingles.com/bin/apollo-broker-service stop
-  when: ("apollo-broker-service is running" in message_queue_status.stdout)
-
-- name: start message queue if stopped
-  become: true
-  become_user: "{{ app_user }}"
-  command: /opt/affinitas_chat/apollomq_1.7.1/chat.elitesingles.com/bin/apollo-broker-service start
-

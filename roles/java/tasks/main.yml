@@ -1,6 +1,17 @@
 ---
 # file: roles/common/tasks/main.yml
 
+- name: "add software-properties-common package (contains: apt-add-repository)"
+  apt:
+    name=software-properties-common
+    state=latest
+    update_cache=yes
+  become: true
+
+- name: "add ppa webupd8team/java (contains: java8)"
+  shell: apt-add-repository ppa:webupd8team/java -y
+  become: true
+
 - name: accept Oracle license
   shell: "echo oracle-java{{ oracle_java_version }}-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections"
   changed_when: no
@@ -10,7 +21,6 @@
   apt:
     name="oracle-java{{ oracle_java_version }}-installer"
     state={{ oracle_java_state }}
-    cache_valid_time={{ oracle_java_cache_valid_time }}
     update_cache=yes
   register: oracle_java_task_apt_install
   become: true
