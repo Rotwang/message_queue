@@ -1,5 +1,2 @@
-
-
-*.class
-chat_service/target/*
-chat_broadcast_sse/target/*
+*.retry
+*.pyc
